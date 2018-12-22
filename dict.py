@@ -9,14 +9,16 @@ class Window(QWidget):
     def __init__(self):
         super().__init__()
         self.initUI()
-
-    def onClicked(self, btn):
-        word = self.line.text()
+    def search(self,word):
         desc = BingDict.search(word)
         self.bing_text.setPlainText(desc)
         desc = YoudaoDict.search(word)
         self.youdao_text.setPlainText(desc)
-
+    def onClicked(self, btn):
+        word = self.line.text()
+        self.search(word)
+    def onReturnPressed(self):
+        self.search(self.line.text())
     def initUI(self):
         # self.statusBar().showMessage('Ready')
 
@@ -46,6 +48,7 @@ class Window(QWidget):
         vbox.addWidget(self.youdao)
         vbox.addWidget(self.youdao_text)
         searchButton.clicked.connect(self.onClicked)
+        self.line.returnPressed.connect(self.onReturnPressed)
         self.setLayout(vbox)
         self.setGeometry(500, 500, 500, 500)
         self.setWindowTitle('Dict')
